@@ -4,9 +4,8 @@ require 'rubyXL/convenience_methods/color'
 require 'rubyXL/convenience_methods/font'
 require 'rubyXL/convenience_methods/workbook'
 require 'rubyXL/convenience_methods/worksheet'
+
 module Due
-
-
   class Excel
     def initialize(path)
       @path = path
@@ -17,27 +16,19 @@ module Due
       @workbook.worksheets
     end
 
-    def columns_at(worksheet, n)
-      cols = []
-      ws = @workbook[worksheet]
-
-      ws.each do |row|
-        cell = row[n]
-        cols << cell.value if cell
-      end
-    end
-
     def fetchAll()
       orderCount = 0
       orders = []
       @workbook.worksheets.each do |ws|
         orders << []
+        # skip the titles row
         (1...ws.count).each do |row_index|
           currentOrder = orders[orderCount]
           row = ws[row_index]
 
           pckId = row[0].value
 
+          # add a package if we found a new one
           currentOrder << [] if pckId >= currentOrder.length
           pck = currentOrder[pckId]
 
@@ -45,7 +36,8 @@ module Due
           lable = row[2].value
           value = row[3].value
 
-          pck << Hash.new('') if itemId >= pck.length
+          # add an item if we found a new one
+          pck << Hash.new(nil) if itemId >= pck.length
           pck[itemId][lable] = value
         end
         orderCount += 1

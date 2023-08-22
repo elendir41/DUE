@@ -4,6 +4,7 @@ require_relative 'db_manipulation'
 module Due
   PATH = "./Orders.xlsx"
 
+  # Display all the orders in the standard output
   def self.displayOrders(orders)
     orders.each_index do |order_index|
       puts "Order #{order_index + 1}:"
@@ -19,20 +20,27 @@ module Due
   end
 
   def self.main()
-    workbook = Excel.new(PATH)
     begin
-      con = PG.connect :dbname => 'due', :user => 'due'   #DataBase.new("due", "due")
+      workbook = Excel.new(PATH)
 
+      # connection to the database
+      con = DataBase.new("due", "due")
+
+      # get all information of the xlsx file
       orders = workbook.fetchAll
+
       displayOrders orders
 
-      pckId = 0
-      itemId = 0
-
+      # get the names of the orders
       data = workbook.fetchNames()
 
       con.insertOrders data
+      con.insertPackages orders
+      con.insertItems orders
 
+
+    rescue RubyXL::ArgumentError => e
+      puts e.message
     rescue PG::Error => e
       puts e.message
     ensure
