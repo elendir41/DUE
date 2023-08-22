@@ -52,7 +52,7 @@ module Due
                 value
               end
             end
-            values << "(#{itemId}, #{item['name'] ? item['name'] : "'unknown'" }, #{item['price'] ? item['price'] : "'unknown'"}, #{item['ref'] ? item['ref'] : "'unknown'"}, #{pckId}, #{item['warranty'] == "YES"}, #{item['duration'] ? item['duration'] : 0})"
+            values << "(#{itemId}, #{item['name'] ? item['name'] : "'unknown'" }, #{item['price'] ? item['price'] : "'unknown'"}, #{item['ref'] ? item['ref'] : "'unknown'"}, #{pckId}, #{item['warranty'] == "'YES'"}, #{item['duration'] ? item['duration'] : 0})"
             itemId += 1
           end
           pckId += 1
