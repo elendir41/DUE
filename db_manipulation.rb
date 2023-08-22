@@ -9,27 +9,13 @@ module Due
         puts e.message
       end
     end
-  end
-end
 
-=begin
+    def insertOrders(data)
+      query = "INSERT INTO orders (orderid, odername) VALUES ($1, $2)"
 
-begin
-
-  rs = con.exec 'SELECT * FROM items' do |result|
-    result.each do |row|
-      puts "row"
-      puts row.values
+      data.each do |values|
+        con.exec_params(query, values)
+      end
     end
   end
-
-rescue PG::Error => e
-
-  puts e.message
-
-ensure
-  rs.clear if rs
-  con.close if con
-
 end
-=end

@@ -17,9 +17,9 @@ module Due
       @workbook.worksheets
     end
 
-    def columns_at(worsheet, n)
+    def columns_at(worksheet, n)
       cols = []
-      ws = @workbook[worsheet]
+      ws = @workbook[worksheet]
 
       ws.each do |row|
         cell = row[n]
@@ -51,6 +51,14 @@ module Due
         orderCount += 1
       end
       return orders
+    end
+
+    def fetchNames()
+      data = []
+      @workbook.each_with_index do |ws, index|
+        data << [index, ws.sheet_name]
+      end
+      return data
     end
   end
 

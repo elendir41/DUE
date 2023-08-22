@@ -26,12 +26,13 @@ module Due
       orders = workbook.fetchAll
       displayOrders orders
 
-      # query = 'INSERT INTO packages (packageid, orderid) VALUES ($1, $2)'
-      # data = [1, 1]
-      #    query = 'INSERT INTO orders (orderid, ordername) VALUES ($1, $2)'
-      #    data = [orderid, ws.sheet_name]
-      #    orderid += 1
-      con.exec_params(query, data)
+      pckId = 0
+      itemId = 0
+
+      data = workbook.fetchNames()
+
+      con.insertOrders data
+
     rescue PG::Error => e
       puts e.message
     ensure
